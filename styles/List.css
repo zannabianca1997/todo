@@ -1,0 +1,17 @@
+@import url('Item.css');
+
+.List {
+    max-height: 100%;
+
+    max-width: 80em;
+
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+
+    overflow: scroll;
+}

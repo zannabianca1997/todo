@@ -1,0 +1,33 @@
+@import url('List.css');
+@import url('Dialog.css');
+
+.App {
+    padding: 3em;
+    position: relative;
+
+    width: 100%;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.App ul {
+    width: 100%;
+}
+
+.App button.add-item {
+    position: absolute;
+    right: 3em;
+    bottom: 3em;
+
+    padding: 1em;
+
+    background-color: var(--color-primary);
+    color: var(--color-white);
+
+    font-weight: 600;
+    font-size: large;
+
+    border-radius: 1em;
+}

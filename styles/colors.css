@@ -1,0 +1,16 @@
+html {
+    /* Palette */
+    --color-black: #0c0d0b;
+    --color-blue: #1b3048;
+    --color-azure: #365a78;
+    --color-aqua: #3e6c6a;
+    --color-green: #14342f;
+    --color-white: #a1d8d4;
+
+    /* Color meanings */
+    --color-primary: var(--color-blue);
+    --color-secondary: var(--color-azure);
+    --color-tertiary: var(--color-aqua);
+    --font-color: var(--color-white);
+    --background-color: var(--color-black);
+}

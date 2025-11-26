@@ -1,0 +1,33 @@
+@import url('colors.css');
+@import url('App.css');
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--font-color);
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+}
+
+header, footer {
+    text-align: center;
+}
+
+main {
+    flex-grow: 1;
+    overflow: hidden;
+}
