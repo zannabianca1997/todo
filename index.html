@@ -4,10 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo</title>
-    <link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
+    <link href="favicon.png" rel="icon" type="image/png">
     <link rel="stylesheet" href="styles/main.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src=" https://cdn.jsdelivr.net/npm/dompurify@3.3.0/dist/purify.min.js "></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.3.0/dist/purify.min.js"></script>
+    <script type="module">
+        import App from "./script/App.js";
+        const app = new App({  });
+        window.addEventListener("load", () => {
+            app.install({ main: $("main"), buttonContainer: $(".button-container") });
+        });
+    </script>
 </head>
 <body>
     <header>
@@ -18,9 +25,5 @@
     <footer>
         <p>Made with ❤️ by <em>Zanna</em></p>
     </footer>
-    <script type="module">
-        import App from "./script/App.js";
-        new App({  }).install({ main: $("main"), buttonContainer: $(".button-container") });
-    </script>
 </body>
 </html>

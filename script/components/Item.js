@@ -1,4 +1,4 @@
-import { v4 } from 'https://cdn.jsdelivr.net/npm/uuid@13.0.0/+esm'
+import { v4 } from 'https://cdn.jsdelivr.net/npm/uuid@13.0.0/+esm';
 import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
 import { removeItem, addItem } from "../utils/storage.js";
 
