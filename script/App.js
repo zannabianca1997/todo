@@ -16,9 +16,15 @@ export default function App({ }) {
         }
     });
 
-    const button = $("<button class='add-item'>Add Item</button>").on("click", () => {
+    const addItem = $("<button class='add-item'>Add Item</button>").on("click", () => {
         dialog.show();
     });
 
-    return $(`<main class="App"></main>`).append(list).append(button).append(dialog);
+    const removeDone = $("<button class='remove-done'>Remove Done</button>").on("click", () => {
+        list.removeDone();
+    });
+
+    const buttonContainer = $("<div class='button-container'></div>").append(addItem).append(removeDone);
+
+    return $(`<main class="App"></main>`).append(list).append(buttonContainer).append(dialog);
 }
