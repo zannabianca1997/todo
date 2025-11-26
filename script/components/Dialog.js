@@ -1,3 +1,19 @@
+/**
+ * @callback AddItemCallback
+ * @param {TodoItem} todoData - The todo item to add
+ * @returns {void}
+ */
+
+/**
+ * @typedef {Object} DialogProps
+ * @property {AddItemCallback} addItem - Callback function to add new todo
+ */
+
+/**
+ * Creates a dialog component for adding new todos
+ * @param {DialogProps} props - Dialog configuration
+ * @returns {JQuery<HTMLDialogElement>} jQuery-enhanced dialog element
+ */
 export default function Dialog({ addItem }) {
     const dialog = $(`<dialog class="Dialog"></dialog>`);
 

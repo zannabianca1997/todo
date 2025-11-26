@@ -2,7 +2,8 @@ import FileSaver from "https://cdn.jsdelivr.net/npm/file-saver@2.0.5/+esm";
 
 /**
  * Export todo data to markdown and trigger download
- * @param {Array} todoData - Array of todo objects with id, title, text, done properties
+ * @param {Array<TodoItem & {id: string}>} todoData - Array of todo objects with id, title, text, done properties
+ * @returns {void}
  */
 export function exportTodosToMarkdown(todoData) {
     const date = new Date().toISOString(); // YYYY-MM-DD format
