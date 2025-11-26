@@ -1,4 +1,5 @@
 import { v4 } from 'https://cdn.jsdelivr.net/npm/uuid@13.0.0/+esm'
+import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
 import { removeItem, addItem } from "../utils/storage.js";
 
 export default function Item({ text, title, id, done, onRemove }) {
@@ -20,10 +21,10 @@ export default function Item({ text, title, id, done, onRemove }) {
 
     const content = $('<div class="content"></div>').appendTo(self);
 
-    $('<span class="title"></span>').text(self.title).appendTo(content);
+    $('<h3 class="title"></h3>').html(DOMPurify.sanitize(marked.parseInline(self.title))).appendTo(content);
 
     if (text) {
-        $('<span class="description"></span>').text(self.text).appendTo(content);
+        $('<div class="description"></div>').html(DOMPurify.sanitize(marked.parse(self.text))).appendTo(content);
     }
 
     self.remove = remove.bind(self, onRemove);

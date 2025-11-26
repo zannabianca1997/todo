@@ -1,26 +1,28 @@
 export default function Dialog({ addItem }) {
     const dialog = $(`<dialog class="Dialog"></dialog>`);
 
+    const headingContainer = $(`<div class="dialog-header"></div>`);
     const heading = $(`<h2>Create new todo</h2>`);
+    const closeButton = $(`<button class="close-button" title="Close">&times;</button>`).on("click", () => {
+        dialog.hide();
+    });
+
+    headingContainer.append(heading).append(closeButton);
 
     const submit = $(`<button>Add</button>`).attr("disabled", "disabled");
 
     const titleInput = $(`<input type="text" class="title" placeholder="Title"></input>`);
     const textArea = $(`<textarea class="text" placeholder="Description"></textarea>`);
 
-    // Validation: enable submit if title or text has content
-    const validateForm = () => {
+
+    titleInput.on("input", () => {
         const hasTitle = titleInput.val().trim().length > 0;
-        const hasText = textArea.val().trim().length > 0;
-        if (hasTitle || hasText) {
+        if (hasTitle) {
             submit.removeAttr("disabled");
         } else {
             submit.attr("disabled", "disabled");
         }
-    };
-
-    titleInput.on("input", validateForm);
-    textArea.on("input", validateForm);
+    });
 
     const form = $(`<form></form>`).on("submit", (e) => {
         e.preventDefault();
@@ -38,5 +40,5 @@ export default function Dialog({ addItem }) {
         dialog.hide();
     }).append(titleInput).append(submit).append(textArea);
 
-    return dialog.append(heading).append(form);
+    return dialog.append(headingContainer).append(form);
 }

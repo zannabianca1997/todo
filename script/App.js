@@ -16,15 +16,15 @@ export default function App({ }) {
         }
     });
 
-    const addItem = $("<button class='add-item'>Add Item</button>").on("click", () => {
+    const addItem = $("<button>Add Item</button>").on("click", () => {
         dialog.show();
     });
 
-    const removeDone = $("<button class='remove-done'>Remove Done</button>").on("click", () => {
+    const removeDone = $("<button>Remove Done</button>").on("click", () => {
         list.removeDone();
     });
 
-    const exportTodos = $("<button class='export-todos'>Export</button>").on("click", () => {
+    const exportTodos = $("<button>Export</button>").on("click", () => {
         list.exportTodos();
     });
 
