@@ -1,5 +1,6 @@
 import { v4 } from 'https://cdn.jsdelivr.net/npm/uuid@13.0.0/+esm';
 import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
+import DOMPurify from "https://cdn.jsdelivr.net/npm/dompurify@3.0.3/+esm";
 import { removeItem, addItem } from "../utils/storage.js";
 
 export default function Item({ text, title, id, done, onRemove }) {

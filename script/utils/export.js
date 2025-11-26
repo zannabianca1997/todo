@@ -1,3 +1,5 @@
+import FileSaver from "https://cdn.jsdelivr.net/npm/file-saver@2.0.5/+esm";
+
 /**
  * Export todo data to markdown and trigger download
  * @param {Array} todoData - Array of todo objects with id, title, text, done properties
@@ -18,12 +20,5 @@ export function exportTodosToMarkdown(todoData) {
 
     // Create and trigger download
     const blob = new Blob([markdown], { type: 'text/markdown' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `todos-${date}.md`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    FileSaver.saveAs(blob, `todos-${date}.md`);
 }
