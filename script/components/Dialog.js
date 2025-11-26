@@ -16,7 +16,7 @@ export default function Dialog({ addItem }) {
         if (input.val().trim().length === 0) {
             return;
         }
-        addItem(input.val());
+        addItem({ text: input.val() });
         input.val("");
         dialog.hide();
     }).append(input).append(submit);

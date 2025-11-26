@@ -6,13 +6,13 @@ export default function App({ }) {
 
     const list = new List({});
 
-    for (const [id, { text }] of Object.entries(getItems())) {
-        list.addItem({ text, id });
+    for (const [id, props] of Object.entries(getItems())) {
+        list.addItem({ id, ...props });
     }
 
     const dialog = new Dialog({
-        addItem: (text) => {
-            list.addItem({ text });
+        addItem: (props) => {
+            list.addItem(props);
         }
     });
 

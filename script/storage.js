@@ -4,9 +4,9 @@ export function getItems() {
     return JSON.parse(localStorage.getItem(itemsKey)) ?? {};
 }
 
-export function addItem({ id, text }) {
+export function addItem({ id, ...props }) {
     const items = getItems();
-    items[id] = { text };
+    items[id] = props;
     localStorage.setItem(itemsKey, JSON.stringify(items));
 }
 
