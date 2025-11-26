@@ -17,16 +17,12 @@
     flex-grow: 1;
 }
 
-.App .button-container {
-    position: absolute;
-    left: 1rem;
-    bottom: 1rem;
-
+.button-container {
     display: flex;
     gap: 0.5rem;
 }
 
-.App .button-container button {
+.button-container button {
     padding: 0.75rem 1.5rem;
     min-width: 120px;
 
@@ -42,6 +38,6 @@
     transition: background-color 0.2s;
 }
 
-.App .button-container button:hover {
+.button-container button:hover {
     background-color: var(--color-tertiary);
 }

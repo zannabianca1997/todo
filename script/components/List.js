@@ -1,5 +1,5 @@
 import Item from "./Item.js";
-
+import { exportTodosToMarkdown } from "../utils/export.js";
 
 export default function List({ }) {
     const self = $(`<ul class="List"></ul>`);
@@ -8,6 +8,7 @@ export default function List({ }) {
 
     self.addItem = addItem.bind(self);
     self.removeDone = removeDone.bind(self);
+    self.exportTodos = exportTodos.bind(self);
 
     return self;
 }
@@ -21,4 +22,12 @@ function addItem(props) {
 function removeDone() {
     const items = Object.values(this.items).filter((item) => item.done);
     items.forEach((item) => item.remove());
+}
+
+function exportTodos() {
+    // Extract data from each item
+    const todoData = Object.values(this.items).map(item => item.getData());
+
+    // Call the export utility function with the extracted data
+    exportTodosToMarkdown(todoData);
 }

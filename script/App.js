@@ -1,6 +1,6 @@
 import List from "./components/List.js";
 import Dialog from "./components/Dialog.js";
-import { getItems } from "./storage.js";
+import { getItems } from "./utils/storage.js";
 
 export default function App({ }) {
 
@@ -24,7 +24,17 @@ export default function App({ }) {
         list.removeDone();
     });
 
-    const buttonContainer = $("<div class='button-container'></div>").append(addItem).append(removeDone);
+    const exportTodos = $("<button class='export-todos'>Export</button>").on("click", () => {
+        list.exportTodos();
+    });
 
-    return $(`<main class="App"></main>`).append(list).append(buttonContainer).append(dialog);
+    this.main = $(`<main class="App"></main>`).append(list).append(dialog);
+    this.buttonContainer = $("<div class='button-container'></div>").append(addItem).append(removeDone).append(exportTodos);
+
+    this.install = install.bind(this);
+}
+
+function install({ main, buttonContainer }) {
+    $(main).replaceWith(this.main);
+    $(buttonContainer).replaceWith(this.buttonContainer);
 }

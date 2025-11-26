@@ -11,6 +11,7 @@
 <body>
     <header>
         <h1>Todo</h1>
+        <div class="button-container"></div>
     </header>
     <main></main>
     <footer>
@@ -18,7 +19,7 @@
     </footer>
     <script type="module">
         import App from "./script/App.js";
-         $("main").replaceWith(new App({  }));
+        new App({  }).install({ main: $("main"), buttonContainer: $(".button-container") });
     </script>
 </body>
 </html>

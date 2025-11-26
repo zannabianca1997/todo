@@ -1,5 +1,5 @@
 import { v4 } from 'https://cdn.jsdelivr.net/npm/uuid@13.0.0/+esm'
-import { removeItem, addItem } from "../storage.js";
+import { removeItem, addItem } from "../utils/storage.js";
 
 export default function Item({ text, title, id, done, onRemove }) {
     const self = $(`<li class="Item"></li>`);
@@ -7,31 +7,29 @@ export default function Item({ text, title, id, done, onRemove }) {
     self.id = id ?? v4();
     self.done = done ?? false;
 
-    title = title ?? (text ? text : '');
-    text = text ?? '';
-
-    addItem({ id: self.id, title, text, done: self.done });
+    self.title = title ?? (text ? text : '');
+    self.text = text ?? '';
 
     $('<input type="checkbox" class="check">').prop("checked", self.done ? "checked" : null).on(
         "change",
         (e) => {
             self.done = e.target.checked;
-            addItem({ id: self.id, done: self.done, title, text });
+            addItem(self.getData());
         }
     ).appendTo(self);
 
     const content = $('<div class="content"></div>').appendTo(self);
 
-    $('<span class="title"></span>').text(title).appendTo(content);
+    $('<span class="title"></span>').text(self.title).appendTo(content);
 
     if (text) {
-        $('<span class="description"></span>').text(text).appendTo(content);
+        $('<span class="description"></span>').text(self.text).appendTo(content);
     }
 
-    self._jremove = self.remove;
-    self._onRemove = onRemove;
+    self.remove = remove.bind(self, onRemove);
+    self.getData = getData.bind(self);
 
-    self.remove = remove.bind(self);
+    addItem(self.getData());
 
     $("<button></button>").text("Remove").on("click", () => {
         self.remove();
@@ -40,8 +38,17 @@ export default function Item({ text, title, id, done, onRemove }) {
     return self;
 }
 
-function remove() {
+function remove(onRemove) {
     removeItem(this.id);
-    this._jremove();
-    this._onRemove?.(this.id);
+    $(this).remove();
+    onRemove?.(this.id);
+}
+
+function getData() {
+    return {
+        id: this.id,
+        title: this.title,
+        text: this.text,
+        done: this.done
+    };
 }
