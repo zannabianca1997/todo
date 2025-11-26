@@ -1,9 +1,8 @@
 @import url('Item.css');
 
 .List {
-    max-height: 100%;
-
-    max-width: 80em;
+    height: 100%;
+    max-width: 60rem;
 
     list-style: none;
     padding: 0;
@@ -11,7 +10,10 @@
 
     display: flex;
     flex-direction: column;
-    gap: 1em;
+    gap: 0.75rem;
 
-    overflow: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    padding-bottom: 5rem;
 }

@@ -1,34 +1,61 @@
 .Dialog {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
-    background-color: var(--color-black);
+    background-color: var(--color-secondary);
+    border: 2px solid var(--color-primary);
     z-index: 10;
 
-    border-radius: 0.25em;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    min-width: 300px;
+    max-width: 400px;
 }
 
 .Dialog form {
    display: flex;
-   gap: 1em;
+   gap: 0.75rem;
+   align-items: center;
 }
 
 .Dialog input {
     flex-grow: 1;
 
-    border-radius: 0.2em;
+    padding: 0.75rem;
+    border: 1px solid var(--color-primary);
+    border-radius: 0.25rem;
+    background-color: var(--color-white);
+    color: var(--color-black);
+    font-size: 1rem;
+
+    outline: none;
+}
+
+.Dialog input:focus {
+    border-color: var(--color-aqua);
+    box-shadow: 0 0 0 2px rgba(54, 90, 120, 0.3);
 }
 
 .Dialog button {
-    padding: 0.2em;
+    padding: 0.75rem 1.5rem;
     background-color: var(--color-primary);
     color: var(--color-white);
+    border: none;
 
     font-weight: 600;
-    font-size: large;
+    font-size: 1rem;
 
-    border-radius: 0.2em;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.Dialog button:hover {
+    background-color: var(--color-tertiary);
+}
+
+.Dialog[style*="display: none"] {
+    display: none !important;
 }
