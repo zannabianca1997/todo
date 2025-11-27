@@ -19,6 +19,8 @@ dialog .dialog-header {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 0.75rem;
+    cursor: move;
+    user-select: none;
 }
 
 dialog h2 {
@@ -48,6 +50,7 @@ dialog .close-button {
     transition: background-color 0.2s;
     flex-shrink: 0;
     margin-left: 0.5rem;
+    z-index: 1; /* Ensure close button stays on top */
 }
 
 dialog .close-button:hover {
