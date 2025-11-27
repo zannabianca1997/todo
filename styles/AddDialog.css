@@ -6,7 +6,7 @@ dialog.Add form {
    align-items: start;
 }
 
-dialog.Add input.title {
+dialog.Add form input.title {
     grid-row: 1;
     grid-column: 1;
 
@@ -20,12 +20,12 @@ dialog.Add input.title {
     outline: none;
 }
 
-dialog.Add input.title:focus {
+dialog.Add form input.title:focus {
     border-color: var(--color-aqua);
     box-shadow: 0 0 0 2px rgba(54, 90, 120, 0.3);
 }
 
-dialog.Add textarea.text {
+dialog.Add form textarea.text {
     grid-row: 2;
     grid-column: 1 / -1;
 
@@ -43,12 +43,12 @@ dialog.Add textarea.text {
    outline: none;
 }
 
-dialog.Add textarea.text:focus {
+dialog.Add form textarea.text:focus {
     border-color: var(--color-aqua);
     box-shadow: 0 0 0 2px rgba(54, 90, 120, 0.3);
 }
 
-dialog.Add button {
+dialog.Add form button {
     grid-row: 1;
     grid-column: 2;
 
@@ -65,6 +65,6 @@ dialog.Add button {
     transition: background-color 0.2s;
 }
 
-dialog.Add button:hover {
+dialog.Add form button:hover {
     background-color: var(--color-tertiary);
 }
