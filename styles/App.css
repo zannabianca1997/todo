@@ -1,5 +1,7 @@
 @import url('List.css');
 @import url('Dialog.css');
+@import url('AddDialog.css');
+@import url('ExportDialog.css');
 
 .App {
     position: relative;

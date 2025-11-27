@@ -1,60 +1,35 @@
 /**
- * @callback AddItemCallback
- * @param {TodoItem} todoData - The todo item to add
- * @returns {void}
- */
-
-/**
  * @typedef {Object} DialogProps
- * @property {AddItemCallback} addItem - Callback function to add new todo
+ * @property {string} title - Dialog title
+ * @property {string} modifier - CSS modifier class for dialog styling
+ * @property {JQuery|string} content - Dialog content (form, div, etc.)
+ * @property {Function} [onClose] - Optional callback function when dialog is closed
  */
 
 /**
- * Creates a dialog component for adding new todos
+ * Creates a general dialog component with close button
  * @param {DialogProps} props - Dialog configuration
- * @returns {JQuery<HTMLDialogElement>} jQuery-enhanced dialog element
+ * @returns {JQuery<HTMLDialogElement>} jQuery-enhanced dialog element with close method
  */
-export default function Dialog({ addItem }) {
-    const dialog = $(`<dialog class="Dialog"></dialog>`);
+export default function Dialog({ title, modifier, content, onClose }) {
+    const dialog = $(`<dialog class="${modifier}"></dialog>`);
 
     const headingContainer = $(`<div class="dialog-header"></div>`);
-    const heading = $(`<h2>Create new todo</h2>`);
+    const heading = $(`<h2>${title}</h2>`);
     const closeButton = $(`<button class="close-button" title="Close">&times;</button>`).on("click", () => {
-        dialog.hide();
+        dialog.close();
     });
 
     headingContainer.append(heading).append(closeButton);
 
-    const submit = $(`<button>Add</button>`).attr("disabled", "disabled");
+    // Convert content string to jQuery if needed
+    const contentElement = typeof content === 'string' ? $(content) : content;
 
-    const titleInput = $(`<input type="text" class="title" placeholder="Title"></input>`);
-    const textArea = $(`<textarea class="text" placeholder="Description"></textarea>`);
-
-
-    titleInput.on("input", () => {
-        const hasTitle = titleInput.val().trim().length > 0;
-        if (hasTitle) {
-            submit.removeAttr("disabled");
-        } else {
-            submit.attr("disabled", "disabled");
-        }
-    });
-
-    const form = $(`<form></form>`).on("submit", (e) => {
-        e.preventDefault();
-        const title = titleInput.val().trim();
-        const text = textArea.val().trim();
-
-        if (!title && !text) {
-            return;
-        }
-
-        addItem({ title, text });
-        titleInput.val("");
-        textArea.val("");
-        submit.attr("disabled", "disabled");
+    // Add close method to the dialog element
+    dialog.close = () => {
         dialog.hide();
-    }).append(titleInput).append(submit).append(textArea);
+        if (onClose) onClose();
+    };
 
-    return dialog.append(headingContainer).append(form);
+    return dialog.append(headingContainer).append(contentElement);
 }

@@ -1,5 +1,6 @@
 import List from "./components/List.js";
-import Dialog from "./components/Dialog.js";
+import AddDialog from "./components/AddDialog.js";
+import ExportDialog from "./components/ExportDialog.js";
 import { getItems } from "./utils/storage.js";
 
 /**
@@ -26,14 +27,20 @@ export default function App({ }) {
         list.addItem({ id, ...props });
     }
 
-    const dialog = new Dialog({
+    const addDialog = new AddDialog({
         addItem: (props) => {
             list.addItem(props);
         }
     });
 
+    const exportDialog = new ExportDialog({
+        exportMarkdown: () => {
+            list.exportTodos();
+        }
+    });
+
     const addItem = $("<button>Add Item</button>").on("click", () => {
-        dialog.show();
+        addDialog.show();
     });
 
     const removeDone = $("<button>Remove Done</button>").on("click", () => {
@@ -41,11 +48,11 @@ export default function App({ }) {
     });
 
     const exportTodos = $("<button>Export</button>").on("click", () => {
-        list.exportTodos();
+        exportDialog.show();
     });
 
     /** @type {JQuery<HTMLElement>} */
-    this.main = $(`<main class="App"></main>`).append(list).append(dialog);
+    this.main = $(`<main class="App"></main>`).append(list).append(addDialog).append(exportDialog);
     /** @type {JQuery<HTMLElement>} */
     this.buttonContainer = $("<div class='button-container'></div>").append(addItem).append(removeDone).append(exportTodos);
 
