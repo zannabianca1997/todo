@@ -1,4 +1,4 @@
-dialog.Add form {
+dialog.Edit form {
    display: grid;
    grid-template-rows: auto 3fr;
    grid-template-columns: 1fr auto;
@@ -6,7 +6,7 @@ dialog.Add form {
    align-items: start;
 }
 
-dialog.Add form input.title {
+dialog.Edit form input.title {
     grid-row: 1;
     grid-column: 1;
 
@@ -20,12 +20,12 @@ dialog.Add form input.title {
     outline: none;
 }
 
-dialog.Add form input.title:focus {
+dialog.Edit form input.title:focus {
     border-color: var(--color-aqua);
     box-shadow: 0 0 0 2px rgba(54, 90, 120, 0.3);
 }
 
-dialog.Add form textarea.text {
+dialog.Edit form textarea.text {
     grid-row: 2;
     grid-column: 1 / -1;
 
@@ -43,12 +43,12 @@ dialog.Add form textarea.text {
    outline: none;
 }
 
-dialog.Add form textarea.text:focus {
+dialog.Edit form textarea.text:focus {
     border-color: var(--color-aqua);
     box-shadow: 0 0 0 2px rgba(54, 90, 120, 0.3);
 }
 
-dialog.Add form button {
+dialog.Edit form button {
     grid-row: 1;
     grid-column: 2;
 
@@ -65,6 +65,6 @@ dialog.Add form button {
     transition: background-color 0.2s;
 }
 
-dialog.Add form button:hover {
+dialog.Edit form button:hover {
     background-color: var(--color-tertiary);
 }

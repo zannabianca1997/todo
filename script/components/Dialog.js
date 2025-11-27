@@ -26,13 +26,19 @@ export default function Dialog({ title, clazz, content, onClose }) {
     const contentElement = typeof content === 'string' ? $(content) : content;
 
     // Make dialog draggable
-    makeDraggable(dialog, headingContainer);
+    const unregisterDraggable = makeDraggable(dialog, headingContainer);
 
     // Add close method to the dialog element
     dialog.close = () => {
         dialog.hide();
         if (onClose) onClose();
     };
+
+    const oldRemove = dialog.remove;
+    dialog.remove = (() => {
+        unregisterDraggable();
+        oldRemove.apply(this, arguments);
+    }).bind(dialog);
 
     return dialog.append(headingContainer).append(contentElement);
 }
@@ -47,7 +53,7 @@ const dialog_stack = [];
 /**
  * 
  * @param {(pos: number) => void} onMove
- * @returns {() => void} callback to move the dialog on top
+ * @returns {{moveOnTop: () => void, unregister: () => void}}
  */
 function register(onMove) {
     const symbol = Symbol();
@@ -56,18 +62,24 @@ function register(onMove) {
     onMove(dialog_stack.length);
     dialog_stack.push({ symbol, onMove });
 
-    return () => {
-        const index = dialog_stack.findIndex(item => item.symbol === symbol);
+    return {
+        moveOnTop() {
+            const index = dialog_stack.findIndex(item => item.symbol === symbol);
 
-        if (index === -1) {
-            throw new Error('Symbol not found in dialog stack');
-        }
+            if (index === -1) {
+                throw new Error('Symbol not found in dialog stack');
+            }
 
-        const [item] = dialog_stack.splice(index, 1);
-        dialog_stack.push(item);
+            const [item] = dialog_stack.splice(index, 1);
+            dialog_stack.push(item);
 
-        for (let i = index; i < dialog_stack.length; i++) {
-            dialog_stack[i].onMove(i);
+            for (let i = index; i < dialog_stack.length; i++) {
+                dialog_stack[i].onMove(i);
+            }
+        },
+        unregister() {
+            const index = dialog_stack.findIndex(item => item.symbol === symbol);
+            dialog_stack.splice(index, 1);
         }
     };
 }
@@ -84,7 +96,7 @@ function makeDraggable(dialogElement, headerElement) {
     let isDragging = false;
     let startX, startY, initialX, initialY;
 
-    const moveOnTop = register((pos) => {
+    const { moveOnTop, unregister } = register((pos) => {
         dialogElement.css("z-index", BASE_Z_INDEX + pos);
     });
 
@@ -152,5 +164,5 @@ function makeDraggable(dialogElement, headerElement) {
         isDragging = false;
     });
 
-
+    return unregister;
 }

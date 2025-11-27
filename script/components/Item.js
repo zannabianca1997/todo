@@ -1,4 +1,4 @@
-import { v4 } from 'https://cdn.jsdelivr.net/npm/uuid@13.0.0/+esm';
+import { ulid } from 'https://cdn.jsdelivr.net/npm/ulid@3.0.1/+esm'
 import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
 import DOMPurify from "https://cdn.jsdelivr.net/npm/dompurify@3.0.3/+esm";
 import { removeItem, addItem } from "../utils/storage.js";
@@ -17,16 +17,16 @@ import { removeItem, addItem } from "../utils/storage.js";
  * @param {ItemProps} props - Item configuration
  * @returns {JQuery<HTMLElement>} jQuery-enhanced list element
  */
-export default function Item({ text, title, id, done, onRemove }) {
+export default function Item({ text, title, id, done, onRemove, onEdit }) {
     const self = $(`<li class="Item"></li>`);
 
-    self.id = id ?? v4();
+    self.id = id ?? ulid();
     self.done = done ?? false;
 
     self.title = title ?? (text ? text : '');
     self.text = text ?? '';
 
-    $('<input type="checkbox" class="check">').prop("checked", self.done ? "checked" : null).on(
+    self.doneCheckbox = $('<input type="checkbox" class="check">').prop("checked", self.done ? "checked" : null).on(
         "change",
         (e) => {
             self.done = e.target.checked;
@@ -34,16 +34,18 @@ export default function Item({ text, title, id, done, onRemove }) {
         }
     ).appendTo(self);
 
-    const content = $('<div class="content"></div>').appendTo(self);
+    self.content = $('<div class="content"></div>').appendTo(self);
 
-    $('<h3 class="title"></h3>').html(DOMPurify.sanitize(marked.parseInline(self.title))).appendTo(content);
+    self.titleElement = $('<h3 class="title"></h3>').html(DOMPurify.sanitize(marked.parseInline(self.title))).appendTo(self.content);
 
+    self.descriptionElement = null;
     if (text) {
-        $('<div class="description"></div>').html(DOMPurify.sanitize(marked.parse(self.text))).appendTo(content);
+        self.descriptionElement = $('<div class="description"></div>').html(DOMPurify.sanitize(marked.parse(self.text))).appendTo(self.content);
     }
 
     self.remove = remove.bind(self, onRemove);
     self.getData = getData.bind(self);
+    self.update = update.bind(self);
 
     addItem(self.getData());
 
@@ -51,7 +53,33 @@ export default function Item({ text, title, id, done, onRemove }) {
         self.remove();
     }).appendTo(self);
 
+    $("<button></button>").text("Edit").on("click", () => {
+        onEdit(self.getData());
+    }).appendTo(self);
+
     return self;
+}
+
+function update({ title, text, done }) {
+    this.title = title ?? (text ? text : '');
+    this.text = text ?? '';
+    this.done = done ?? false;
+
+    this.titleElement.html(DOMPurify.sanitize(marked.parseInline(this.title)));
+
+    if (text) {
+        if (!this.descriptionElement) {
+            this.descriptionElement = $('<div class="description"></div>').appendTo(this.content);
+        }
+        this.descriptionElement.html(DOMPurify.sanitize(marked.parse(this.text)));
+    } else if (this.descriptionElement) {
+        this.descriptionElement.remove();
+        this.descriptionElement = null;
+    }
+
+    this.doneCheckbox.prop("checked", this.done ? "checked" : null);
+
+    addItem(this.getData());
 }
 
 /**

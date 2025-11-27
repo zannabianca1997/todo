@@ -1,5 +1,5 @@
 import List from "./components/List.js";
-import AddDialog from "./components/AddDialog.js";
+import EditDialog from "./components/EditDialog.js";
 import ExportDialog from "./components/ExportDialog.js";
 import { getItems } from "./utils/storage.js";
 
@@ -20,22 +20,55 @@ import { getItems } from "./utils/storage.js";
  * @returns {Object} App instance with install method
  */
 export default function App({ }) {
+    const main = $(`<main class="App"></main>`)
 
-    const list = new List({});
+    const editDialogs = {};
 
-    for (const [id, props] of Object.entries(getItems())) {
+    const list = new List({
+        onEdit({ id, ...initial }) {
+            if (editDialogs[id]) {
+                editDialogs[id].show();
+                return;
+            }
+
+            editDialogs[id] = new EditDialog({
+                submitText: "Edit",
+                headerText: "Edit todo",
+                initial,
+                addItem: (props) => {
+                    console.log(props);
+                    editDialogs[id].remove();
+                    delete editDialogs[id];
+                    list.updateItem({ id, ...props });
+                }
+            });
+
+            editDialogs[id].appendTo(main).show();
+        }
+    });
+
+    for (const [id, props] of Object.entries(getItems()).toSorted(([id1], [id2]) => id1 < id2 ? -1 : 1)) {
         list.addItem({ id, ...props });
     }
 
-    const addDialog = new AddDialog({
+    const addDialog = new EditDialog({
+        submitText: "Add",
+        headerText: "Create new todo",
         addItem: (props) => {
             list.addItem(props);
-        }
+        },
+        resetOnClose: true
     });
 
     const exportDialog = new ExportDialog({
         exportMarkdown: () => {
-            list.exportTodos();
+            list.exportTodos('markdown');
+        },
+        exportJSON: () => {
+            list.exportTodos('json');
+        },
+        exportYAML: () => {
+            list.exportTodos('yaml');
         }
     });
 
@@ -52,7 +85,7 @@ export default function App({ }) {
     });
 
     /** @type {JQuery<HTMLElement>} */
-    this.main = $(`<main class="App"></main>`).append(list).append(addDialog).append(exportDialog);
+    this.main = main.append(list).append(addDialog).append(exportDialog);
     /** @type {JQuery<HTMLElement>} */
     this.buttonContainer = $("<div class='button-container'></div>").append(addItem).append(removeDone).append(exportTodos);
 
