@@ -15,7 +15,7 @@ export default function ExportDialog({ exportMarkdown }) {
 
     const dialog = new Dialog({
         title: "Export Options",
-        modifier: "Export",
+        clazz: "Export",
         content: optionsContainer
     });
 

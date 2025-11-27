@@ -35,7 +35,7 @@ export default function AddDialog({ addItem }) {
 
     const dialog = new Dialog({
         title: "Create new todo",
-        modifier: "Add",
+        clazz: "Add",
         content: form,
         onClose: () => {
             // Reset form when dialog is closed

@@ -6,7 +6,6 @@ dialog {
 
     background-color: var(--color-secondary);
     border: 2px solid var(--color-primary);
-    z-index: 10;
 
     padding: 1rem;
     border-radius: 0.5rem;

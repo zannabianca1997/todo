@@ -1,7 +1,7 @@
 /**
  * @typedef {Object} DialogProps
  * @property {string} title - Dialog title
- * @property {string} modifier - CSS modifier class for dialog styling
+ * @property {string} clazz - CSS modifier class for dialog styling
  * @property {JQuery|string} content - Dialog content (form, div, etc.)
  * @property {Function} [onClose] - Optional callback function when dialog is closed
  */
@@ -11,8 +11,8 @@
  * @param {DialogProps} props - Dialog configuration
  * @returns {JQuery<HTMLDialogElement>} jQuery-enhanced dialog element with close method
  */
-export default function Dialog({ title, modifier, content, onClose }) {
-    const dialog = $(`<dialog class="${modifier}"></dialog>`);
+export default function Dialog({ title, clazz, content, onClose }) {
+    const dialog = $(`<dialog class="${clazz}"></dialog>`);
 
     const headingContainer = $(`<div class="dialog-header"></div>`);
     const heading = $(`<h2>${title}</h2>`);
@@ -38,6 +38,44 @@ export default function Dialog({ title, modifier, content, onClose }) {
 }
 
 /**
+ * Dialog stack
+ * 
+ * @type {Array<{symbol: symbol, onMove: (pos: number) => void}>}
+ */
+const dialog_stack = [];
+
+/**
+ * 
+ * @param {(pos: number) => void} onMove
+ * @returns {() => void} callback to move the dialog on top
+ */
+function register(onMove) {
+    const symbol = Symbol();
+
+    // start from top of stack
+    onMove(dialog_stack.length);
+    dialog_stack.push({ symbol, onMove });
+
+    return () => {
+        const index = dialog_stack.findIndex(item => item.symbol === symbol);
+
+        if (index === -1) {
+            throw new Error('Symbol not found in dialog stack');
+        }
+
+        const [item] = dialog_stack.splice(index, 1);
+        dialog_stack.push(item);
+
+        for (let i = index; i < dialog_stack.length; i++) {
+            dialog_stack[i].onMove(i);
+        }
+    };
+}
+
+
+const BASE_Z_INDEX = 10;
+
+/**
  * Makes a dialog element draggable by its header
  * @param {JQuery} dialogElement - The dialog element to make draggable
  * @param {JQuery} headerElement - The header element to use as drag handle
@@ -46,9 +84,13 @@ function makeDraggable(dialogElement, headerElement) {
     let isDragging = false;
     let startX, startY, initialX, initialY;
 
+    const moveOnTop = register((pos) => {
+        dialogElement.css("z-index", BASE_Z_INDEX + pos);
+    });
+
     headerElement.css('cursor', 'move');
 
-    headerElement.on('mousedown', function(e) {
+    headerElement.on('mousedown', function (e) {
         // Only allow dragging with left mouse button
         if (e.button !== 0) return;
 
@@ -70,10 +112,13 @@ function makeDraggable(dialogElement, headerElement) {
             'margin': '0'
         });
 
+
+        moveOnTop();
+
         e.preventDefault();
     });
 
-    $(document).on('mousemove', function(e) {
+    $(document).on('mousemove', function (e) {
         if (!isDragging) return;
 
         const deltaX = e.clientX - startX;
@@ -97,7 +142,7 @@ function makeDraggable(dialogElement, headerElement) {
         });
     });
 
-    $(document).on('mouseup', function() {
+    $(document).on('mouseup', function () {
         isDragging = false;
     });
 }
