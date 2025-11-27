@@ -88,6 +88,12 @@ function makeDraggable(dialogElement, headerElement) {
         dialogElement.css("z-index", BASE_Z_INDEX + pos);
     });
 
+    const oldShow = dialogElement.show;
+    dialogElement.show = (function () {
+        moveOnTop();
+        oldShow.apply(this, arguments);
+    }).bind(dialogElement);
+
     headerElement.css('cursor', 'move');
 
     headerElement.on('mousedown', function (e) {
@@ -145,4 +151,6 @@ function makeDraggable(dialogElement, headerElement) {
     $(document).on('mouseup', function () {
         isDragging = false;
     });
+
+
 }
